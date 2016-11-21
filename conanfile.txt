@@ -1,0 +1,6 @@
+[requires]
+Boost/1.60.0@lasote/stable
+Crow/0.1@javierjeronimo/testing
+
+[generators]
+cmake
