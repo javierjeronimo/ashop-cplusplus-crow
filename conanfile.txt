@@ -1,6 +1,9 @@
 [requires]
 Boost/1.60.0@lasote/stable
 Crow/0.1@javierjeronimo/testing
+Json11/latest@javierjeronimo/testing
+catch/1.5.0@TyRoXx/stable
+FakeIt/2.0.2@hinrikg/stable
 
 [generators]
 cmake

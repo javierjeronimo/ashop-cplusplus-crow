@@ -1,12 +1,24 @@
+
 #include <iostream>
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/parsers.hpp>
 
+// WTF!!!
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 #include <crow_all.h>
 
+#pragma clang diagnostic pop
+
+#include "../ashop/presentation/Api.h"
+#include "../ashop/infrastructure/impl/memory/BasketRepositoryMemory.h"
+
 namespace po = boost::program_options;
+
+using namespace ashop::presentation;
 
 /**
  * Process program options and show help in case it was asked for.
@@ -33,10 +45,12 @@ int main(int argc, const char *argv[]) {
 
     crow::SimpleApp app;
 
-    CROW_ROUTE(app, "/")
-            ([]() {
-                return "Hello world!";
-            });
+    // Manual DI
+    ashop::infrastructure::impl::memory::BasketRepositoryMemory basket_repository;
+    ashop::business_logic::BuyerUseCases                        buyer_use_cases(basket_repository);
+
+    // API
+    Api api(app, buyer_use_cases);
 
     app.port(18080).run();
 }
@@ -45,13 +59,13 @@ int main(int argc, const char *argv[]) {
 int processOptions(int argc, const char *argv[]) {
     po::options_description helpDescription("Allowed options");
     helpDescription.add_options()
-            ("help", "produce help message");
+            ("helpController", "produce helpController message");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, helpDescription), vm);
     po::notify(vm);
 
-    if (vm.count("help")) {
+    if (vm.count("helpController")) {
         std::cout << helpDescription << "\n";
         return 1;
     }

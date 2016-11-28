@@ -6,6 +6,8 @@ conan_basic_setup()
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp)
-add_executable(ashop_cplusplus ${SOURCE_FILES})
-target_link_libraries(ashop_cplusplus ${CONAN_LIBS})
+add_subdirectory(src/ashop)
+add_subdirectory(src/main)
+add_subdirectory(test)
+
+enable_testing()
